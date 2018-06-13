@@ -1,11 +1,12 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(phasespace_ros)
 
+add_compile_options(-std=c++11)
 if(NOT CMAKE_CONFIGURATION_TYPES AND NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE Release)
 endif()
 
-find_package(catkin REQUIRED COMPONENTS roscpp message_generation)
+find_package(catkin REQUIRED COMPONENTS roscpp message_generation geometry_msgs tf)
 find_package(PkgConfig)
 
 add_message_files(
@@ -19,12 +20,12 @@ add_message_files(
   Rigids.msg
 )
 
-generate_messages(DEPENDENCIES std_msgs)
+generate_messages(DEPENDENCIES std_msgs geometry_msgs)
 
 catkin_package(
   INCLUDE_DIRS include
   LIBRARIES ${PROJECT_NAME}
-  CATKIN_DEPENDS std_msgs roscpp message_runtime
+  CATKIN_DEPENDS std_msgs roscpp message_runtime geometry_msgs
 )
 
 include_directories(include
@@ -45,5 +46,5 @@ add_executable(${PROJECT_NAME}_node src/psnode.cpp)
 target_link_libraries(${PROJECT_NAME}_node owlsock ${catkin_LIBRARIES})
 
 # subscriber test
-add_executable(listener src/listener.cpp)
-target_link_libraries(listener ${catkin_LIBRARIES})
+#add_executable(listener src/listener.cpp)
+#target_link_libraries(listener ${catkin_LIBRARIES})

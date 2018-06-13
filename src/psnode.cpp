@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string>
 
 #include <ros/ros.h>
 #include <ros/console.h>
@@ -6,14 +7,15 @@
 #include <geometry_msgs/Pose.h>
 #include <geometry_msgs/PoseArray.h>
 #include <geometry_msgs/Point.h>
+#include <visualization_msgs/Marker.h>
 #include <tf/transform_broadcaster.h>
 
-#include "phasespace/owl.hpp"
+#include "phasespace_ros/owl.hpp"
 
-#include "phasespace/Camera.h"
-#include "phasespace/Cameras.h"
-#include "phasespace/Marker.h"
-#include "phasespace/Markers.h"
+#include "phasespace_ros/Camera.h"
+#include "phasespace_ros/Cameras.h"
+#include "phasespace_ros/Marker.h"
+#include "phasespace_ros/Markers.h"
 
 //using namespace std;
 
@@ -35,10 +37,10 @@ int main(int argc, char **argv)
     std::string address;
 
     ros::Publisher errorsPub = nh.advertise<std_msgs::String>("phasespace_errors", 1000, true);
-    ros::Publisher camerasPub = nh.advertise<phasespace::Cameras>("phasespace_cameras", 1000, true);
-    ros::Publisher markersPub = nh.advertise<phasespace::Markers>("phasespace_markers", 1000);
+    ros::Publisher camerasPub = nh.advertise<phasespace_ros::Cameras>("phasespace_cameras", 1000, true);
+    ros::Publisher markersPub = nh.advertise<phasespace_ros::Markers>("phasespace_markers", 1000);
 
-    static tf::TransformBroadcaster br;
+    tf::TransformBroadcaster br;
     std::string base_frame = "phasespace_base";
 
     // simple example
@@ -49,7 +51,8 @@ int main(int argc, char **argv)
     // start streaming
     ROS_INFO("Starting streaming...");
     owl.streaming(1);
-
+    
+    ros::Rate r(1000);
     // main loop
     while (ros::ok() && owl.isOpen() && owl.property<int>("initialized"))
     {
@@ -68,10 +71,10 @@ int main(int argc, char **argv)
         {
             if (event->name() == std::string("cameras") && event->get(cameras) > 0)
             {
-                phasespace::Cameras out;
+                phasespace_ros::Cameras out;
                 for (OWL::Cameras::iterator c = cameras.begin(); c != cameras.end(); c++)
                 {
-                    phasespace::Camera cam;
+                    phasespace_ros::Camera cam;
                     //
                     cam.id = c->id;
                     cam.flags = c->flags;
@@ -85,7 +88,7 @@ int main(int argc, char **argv)
                     cam.cond = c->cond;
                     //
                     out.cameras.push_back(cam);
-
+                    //TODO: check cond or flag
                     tf::Transform transform;
                     transform.setOrigin( tf::Vector3(c->pose[0], c->pose[1], c->pose[2]) );
                     transform.setRotation( tf::Quaternion(c->pose[4], c->pose[5], c->pose[6], c->pose[3]) );
@@ -98,23 +101,25 @@ int main(int argc, char **argv)
         {
             if (event->find("markers", markers) > 0)
             {
-                phasespace::Markers out;
+                phasespace_ros::Markers out;
                 for (OWL::Markers::iterator m = markers.begin(); m != markers.end(); m++)
                 {
-                    phasespace::Marker mout;
+                    phasespace_ros::Marker mout;
                     mout.id = m->id;
                     mout.time = m->time;
                     mout.flags = m->flags;
                     mout.cond = m->cond;
-                    mout.x = m->x;
-                    mout.y = m->y;
-                    mout.z = m->z;
+                    mout.point.x = m->x;
+                    mout.point.y = m->y;
+                    mout.point.z = m->z;
                     out.markers.push_back(mout);
                 }
 
                 markersPub.publish(out);
             }
         }
+
+        r.sleep();
     } // while
 
     owl.done();
