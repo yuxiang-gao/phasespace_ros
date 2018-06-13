@@ -1,36 +1,63 @@
 {
-  "configurations": [
-    {
-      "browse": {
-        "databaseFilename": "",
-        "limitSymbolsToIncludedHeaders": true
-      },
-      "includePath": [
-        "/home/intuitive_computing/catkin_ws/devel/include",
-        "/opt/ros/kinetic/include",
-        "/home/intuitive_computing/catkin_ws/src/data_acquisition/da_launch/include",
-        "/home/intuitive_computing/catkin_ws/src/ur5/force_torque_tools/force_torque_sensor_calib/include",
-        "/home/intuitive_computing/catkin_ws/src/ur5/force_torque_tools/gravity_compensation/include",
-        "/home/intuitive_computing/catkin_ws/src/haptic_interface/include",
-        "/home/intuitive_computing/catkin_ws/src/ur5/ur5_with_gripper/icl_phri_robotiq_control/include",
-        "/home/intuitive_computing/catkin_ws/src/ur5/ur5_with_gripper/icl_phri_ur5_control/include",
-        "/home/intuitive_computing/catkin_ws/src/ur5/ur5_with_gripper/icl_phri_ur5_ros_control/include",
-        "/home/intuitive_computing/catkin_ws/src/data_acquisition/phasespace_ros/phasespace/include",
-        "/home/intuitive_computing/catkin_ws/src/data_acquisition/phasespace_ros/phasescape_ros/include",
-        "/home/intuitive_computing/catkin_ws/src/drivers/realsense-2.0.3/realsense2_camera/include",
-        "/home/intuitive_computing/catkin_ws/src/ur5/robotiq/robotiq_action_server/include",
-        "/home/intuitive_computing/catkin_ws/src/ur5/robotiq/robotiq_c_model_control/include",
-        "/home/intuitive_computing/catkin_ws/src/ur5/robotiq/robotiq_ethercat/include",
-        "/home/intuitive_computing/catkin_ws/src/ur5/robotiq/robotiq_force_torque_sensor/include",
-        "/home/intuitive_computing/catkin_ws/src/ur5/robotiq/robotiq_s_model_articulated_gazebo_plugins/include",
-        "/home/intuitive_computing/catkin_ws/src/ur5/robotiq/robotiq_s_model_control/include",
-        "/home/intuitive_computing/catkin_ws/src/ur5/ur5_with_gripper/ur_kinematics/include",
-        "/home/intuitive_computing/catkin_ws/src/ur5/ur_modern_driver/include",
-        "/home/intuitive_computing/catkin_ws/src/ur5/ur5_with_gripper/warehouse_ros/include",
-        "/home/intuitive_computing/catkin_ws/src/ur5/ur5_with_gripper/warehouse_ros_mongo/include",
-        "/usr/include"
-      ],
-      "name": "Linux"
-    }
-  ]
+    "configurations": [
+        {
+            "browse": {
+                "databaseFilename": "",
+                "limitSymbolsToIncludedHeaders": true,
+                "path": [
+                    "/home/intuitive_computing/catkin_ws/devel/include",
+                    "/opt/ros/kinetic/include",
+                    "/home/intuitive_computing/catkin_ws/src/data_acquisition/da_launch/include",
+                    "/home/intuitive_computing/catkin_ws/src/ur5/force_torque_tools/force_torque_sensor_calib/include",
+                    "/home/intuitive_computing/catkin_ws/src/ur5/force_torque_tools/gravity_compensation/include",
+                    "/home/intuitive_computing/catkin_ws/src/haptic_interface/include",
+                    "/home/intuitive_computing/catkin_ws/src/ur5/ur5_with_gripper/icl_phri_robotiq_control/include",
+                    "/home/intuitive_computing/catkin_ws/src/ur5/ur5_with_gripper/icl_phri_ur5_control/include",
+                    "/home/intuitive_computing/catkin_ws/src/ur5/ur5_with_gripper/icl_phri_ur5_ros_control/include",
+                    "/home/intuitive_computing/catkin_ws/src/data_acquisition/phasespace_ros/phasespace/include",
+                    "/home/intuitive_computing/catkin_ws/src/data_acquisition/phasespace_ros/phasescape_ros/include",
+                    "/home/intuitive_computing/catkin_ws/src/drivers/realsense-2.0.3/realsense2_camera/include",
+                    "/home/intuitive_computing/catkin_ws/src/ur5/robotiq/robotiq_action_server/include",
+                    "/home/intuitive_computing/catkin_ws/src/ur5/robotiq/robotiq_c_model_control/include",
+                    "/home/intuitive_computing/catkin_ws/src/ur5/robotiq/robotiq_ethercat/include",
+                    "/home/intuitive_computing/catkin_ws/src/ur5/robotiq/robotiq_force_torque_sensor/include",
+                    "/home/intuitive_computing/catkin_ws/src/ur5/robotiq/robotiq_s_model_articulated_gazebo_plugins/include",
+                    "/home/intuitive_computing/catkin_ws/src/ur5/robotiq/robotiq_s_model_control/include",
+                    "/home/intuitive_computing/catkin_ws/src/ur5/ur5_with_gripper/ur_kinematics/include",
+                    "/home/intuitive_computing/catkin_ws/src/ur5/ur_modern_driver/include",
+                    "/home/intuitive_computing/catkin_ws/src/ur5/ur5_with_gripper/warehouse_ros/include",
+                    "/home/intuitive_computing/catkin_ws/src/ur5/ur5_with_gripper/warehouse_ros_mongo/include",
+                    "/usr/include"
+                ]
+            },
+            "includePath": [
+                "/home/intuitive_computing/catkin_ws/devel/include",
+                "/opt/ros/kinetic/include",
+                "/home/intuitive_computing/catkin_ws/src/data_acquisition/da_launch/include",
+                "/home/intuitive_computing/catkin_ws/src/ur5/force_torque_tools/force_torque_sensor_calib/include",
+                "/home/intuitive_computing/catkin_ws/src/ur5/force_torque_tools/gravity_compensation/include",
+                "/home/intuitive_computing/catkin_ws/src/haptic_interface/include",
+                "/home/intuitive_computing/catkin_ws/src/ur5/ur5_with_gripper/icl_phri_robotiq_control/include",
+                "/home/intuitive_computing/catkin_ws/src/ur5/ur5_with_gripper/icl_phri_ur5_control/include",
+                "/home/intuitive_computing/catkin_ws/src/ur5/ur5_with_gripper/icl_phri_ur5_ros_control/include",
+                "/home/intuitive_computing/catkin_ws/src/data_acquisition/phasespace_ros/phasespace/include",
+                "/home/intuitive_computing/catkin_ws/src/data_acquisition/phasespace_ros/phasescape_ros/include",
+                "/home/intuitive_computing/catkin_ws/src/drivers/realsense-2.0.3/realsense2_camera/include",
+                "/home/intuitive_computing/catkin_ws/src/ur5/robotiq/robotiq_action_server/include",
+                "/home/intuitive_computing/catkin_ws/src/ur5/robotiq/robotiq_c_model_control/include",
+                "/home/intuitive_computing/catkin_ws/src/ur5/robotiq/robotiq_ethercat/include",
+                "/home/intuitive_computing/catkin_ws/src/ur5/robotiq/robotiq_force_torque_sensor/include",
+                "/home/intuitive_computing/catkin_ws/src/ur5/robotiq/robotiq_s_model_articulated_gazebo_plugins/include",
+                "/home/intuitive_computing/catkin_ws/src/ur5/robotiq/robotiq_s_model_control/include",
+                "/home/intuitive_computing/catkin_ws/src/ur5/ur5_with_gripper/ur_kinematics/include",
+                "/home/intuitive_computing/catkin_ws/src/ur5/ur_modern_driver/include",
+                "/home/intuitive_computing/catkin_ws/src/ur5/ur5_with_gripper/warehouse_ros/include",
+                "/home/intuitive_computing/catkin_ws/src/ur5/ur5_with_gripper/warehouse_ros_mongo/include",
+                "/usr/include"
+            ],
+            "name": "Linux",
+            "intelliSenseMode": "clang-x64"
+        }
+    ],
+    "version": 4
 }
