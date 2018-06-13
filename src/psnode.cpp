@@ -40,6 +40,8 @@ int main(int argc, char **argv)
     ros::Publisher camerasPub = nh.advertise<phasespace_ros::Cameras>("phasespace_cameras", 1000, true);
     ros::Publisher markersPub = nh.advertise<phasespace_ros::Markers>("phasespace_markers", 1000);
 
+    ros::Publisher vis_marker_pub = nh.advertise<visualization_msgs::Marker>("visualization_marker", 10);
+
     tf::TransformBroadcaster br;
     std::string base_frame = "phasespace_base";
 
@@ -116,6 +118,33 @@ int main(int argc, char **argv)
                 }
 
                 markersPub.publish(out);
+
+                visualization_msgs::Marker points;
+                points.header.frame_id = base_frame;
+                points.header.stamp = ros::Time::now();
+                points.ns = "vis_markers";
+                points.action = visualization_msgs::Marker::ADD;
+                points.pose.orientation.w = 1.0;
+                points.id = 0;
+                points.type = visualization_msgs::Marker::SPHERE_LIST;
+                // POINTS markers use x and y scale for width/height respectively
+                points.scale.x = 0.1;
+                points.scale.y = 0.1;
+                points.scale.z = 0.1;
+
+                // Points are green
+                points.color.r = 1.0f;
+                points.color.a = 1.0f;
+                for (OWL::Markers::iterator m = markers.begin(); m != markers.end(); m++)
+                {
+                    geometry_msgs::Point p;
+                    p.x = m->x;
+                    p.y = m->y;
+                    p.z = m->z;
+                    points.points.push_back(p);
+
+                }
+                vis_marker_pub.publish(points);
             }
         }
 
