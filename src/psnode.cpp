@@ -1,7 +1,7 @@
 #include <iostream>
 
 #include "ros/ros.h"
-#include "owl.hpp"
+#include "phasespace/owl.hpp"
 #include "std_msgs/String.h"
 #include "phasespace/Camera.h"
 #include "phasespace/Cameras.h"
