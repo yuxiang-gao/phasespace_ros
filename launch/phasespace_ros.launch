@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <launch>
-    <arg name="server_ip" value="192.168.1.230" />
+    <arg name="server_ip" default="192.168.1.230" />
     <arg name="display" default="true" />
     <node name="phasespace_ros" pkg="phasespace_ros" type="phasespace_ros_node" output="screen">
         <param name="server_ip" type="str" value="$(arg server_ip)"/>
