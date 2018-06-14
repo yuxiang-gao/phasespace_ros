@@ -33,22 +33,35 @@ int main(int argc, char **argv)
     // initialize ROS
     ros::init(argc, argv, "phasespace_node");
     ros::NodeHandle nh;
-
-    std::string address;
+    ros::NodeHandle pnh("~");
 
     ros::Publisher errorsPub = nh.advertise<std_msgs::String>("phasespace_errors", 1000, true);
-    ros::Publisher camerasPub = nh.advertise<phasespace_ros::Cameras>("phasespace_cameras", 1000, true);
+    //ros::Publisher camerasPub = nh.advertise<phasespace_ros::Cameras>("phasespace_cameras", 1000, true);
     ros::Publisher markersPub = nh.advertise<phasespace_ros::Markers>("phasespace_markers", 1000);
-
     ros::Publisher vis_marker_pub = nh.advertise<visualization_msgs::Marker>("visualization_marker", 10);
 
     tf::TransformBroadcaster br;
     std::string base_frame = "phasespace_base";
+    std::vector<std::pair<int, tf::Transform>> transforms;
+
+    // load ip address from ros param
+    std::string address;
+    if (pnh.getParam("server_ip", address))
+    {
+        ROS_INFO("Opening port at: %s", address.c_str());
+    }
+    else
+    {
+        ROS_ERROR("Failed to get ip address");
+    }
 
     // simple example
-    if (!nh.getParam("/server_ip", address) || owl.open(address) <= 0 || owl.initialize("timebase=1,1000000") <= 0)
+    //std::cout << owl.open(address) <<owl.initialize("timebase=1,1000000")<< std::endl;
+    if (owl.open(address) <= 0 || owl.initialize("timebase=1,1000000") <= 0)
+    {
         ROS_INFO("Connection failed!!");
         return 0;
+    }
 
     // start streaming
     ROS_INFO("Starting streaming...");
@@ -58,7 +71,17 @@ int main(int argc, char **argv)
     // main loop
     while (ros::ok() && owl.isOpen() && owl.property<int>("initialized"))
     {
+        // std::cout << owl.isOpen() << owl.property<int>("initialized") << std::endl;
         const OWL::Event *event = owl.nextEvent(1000);
+        // publish camera frames if available 
+        if (transforms.size() != 0)
+        {
+            for (auto & t: transforms)
+            {
+                br.sendTransform(tf::StampedTransform(t.second, ros::Time::now(), base_frame, std::string("camera_") + std::to_string(t.first)));
+            }
+        }
+
         if (!event)
             continue;
 
@@ -73,31 +96,16 @@ int main(int argc, char **argv)
         {
             if (event->name() == std::string("cameras") && event->get(cameras) > 0)
             {
-                phasespace_ros::Cameras out;
+                transforms.clear();
                 for (OWL::Cameras::iterator c = cameras.begin(); c != cameras.end(); c++)
                 {
-                    phasespace_ros::Camera cam;
-                    //
-                    cam.id = c->id;
-                    cam.flags = c->flags;
-                    cam.x = c->pose[0];
-                    cam.y = c->pose[1];
-                    cam.z = c->pose[2];
-                    cam.qw = c->pose[3];
-                    cam.qx = c->pose[4];
-                    cam.qy = c->pose[5];
-                    cam.qz = c->pose[6];
-                    cam.cond = c->cond;
-                    //
-                    out.cameras.push_back(cam);
-                    //TODO: check cond or flag
+                    // TODO: check cond or flag
                     // publish tf frames
                     tf::Transform transform;
-                    transform.setOrigin( tf::Vector3(c->pose[0], c->pose[1], c->pose[2]) );
+                    transform.setOrigin( tf::Vector3(c->pose[0]/1000, c->pose[1]/1000, c->pose[2]/1000) );
                     transform.setRotation( tf::Quaternion(c->pose[4], c->pose[5], c->pose[6], c->pose[3]) );
-                    br.sendTransform(tf::StampedTransform(transform, ros::Time::now(), base_frame, std::string("camera_") + std::to_string(c->id)));
+                    transforms.push_back(std::make_pair(c->id, transform));
                 }
-                camerasPub.publish(out);
             }
         }
         else if (event->type_id() == OWL::Type::FRAME)
@@ -139,9 +147,9 @@ int main(int argc, char **argv)
                 for (OWL::Markers::iterator m = markers.begin(); m != markers.end(); m++)
                 {
                     geometry_msgs::Point p;
-                    p.x = m->x;
-                    p.y = m->y;
-                    p.z = m->z;
+                    p.x = m->x / 1000;
+                    p.y = m->y / 1000;
+                    p.z = m->z / 1000;
                     points.points.push_back(p);
 
                 }
