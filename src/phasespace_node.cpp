@@ -91,6 +91,7 @@ int main(int argc, char **argv)
                     //
                     out.cameras.push_back(cam);
                     //TODO: check cond or flag
+                    // publish tf frames
                     tf::Transform transform;
                     transform.setOrigin( tf::Vector3(c->pose[0], c->pose[1], c->pose[2]) );
                     transform.setRotation( tf::Quaternion(c->pose[4], c->pose[5], c->pose[6], c->pose[3]) );

@@ -6,45 +6,23 @@ if(NOT CMAKE_CONFIGURATION_TYPES AND NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE Release)
 endif()
 
-find_package(catkin REQUIRED COMPONENTS roscpp message_generation geometry_msgs tf)
-find_package(PkgConfig)
+find_package(catkin_simple REQUIRED)
 
-add_message_files(
-  DIRECTORY msg
-  FILES
-  Camera.msg
-  Cameras.msg
-  Marker.msg
-  Markers.msg
-  Rigid.msg
-  Rigids.msg
-)
+catkin_simple()
 
-generate_messages(DEPENDENCIES std_msgs geometry_msgs)
-
-catkin_package(
-  INCLUDE_DIRS include
-  LIBRARIES ${PROJECT_NAME}
-  CATKIN_DEPENDS std_msgs roscpp message_runtime geometry_msgs
-)
-
-include_directories(include
-  ${catkin_INCLUDE_DIRS}
-  ${CMAKE_CURRENT_BINARY_DIR}/include
-)
-
+# cs_add_library(my_lib src/my_lib.cpp)
 link_directories(${catkin_LIBRARY_DIRS} bin)
 
 add_library(owlsock SHARED IMPORTED)
 set_target_properties(owlsock PROPERTIES IMPORTED_LOCATION ${CMAKE_CURRENT_SOURCE_DIR}/bin/libowlsock.so)
 
-add_library(${PROJECT_NAME} src/psnode.cpp)
-add_dependencies(${PROJECT_NAME} phasespace_gencpp)
+cs_add_executable(${PROJECT_NAME}_node src/phasespace_node.cpp)
+target_link_libraries(${PROJECT_NAME}_node owlsock)
 
-# publisher example
-add_executable(${PROJECT_NAME}_node src/psnode.cpp)
-target_link_libraries(${PROJECT_NAME}_node owlsock ${catkin_LIBRARIES})
+cs_install()
 
-# subscriber test
-#add_executable(listener src/listener.cpp)
-#target_link_libraries(listener ${catkin_LIBRARIES})
+# catkin_python_setup()
+
+# cs_install_scripts(scripts/)
+
+cs_export()
