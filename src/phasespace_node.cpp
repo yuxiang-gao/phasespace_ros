@@ -35,9 +35,10 @@ int main(int argc, char **argv)
     ros::NodeHandle nh;
     ros::NodeHandle pnh("~");
 
-    ros::Publisher errorsPub = nh.advertise<std_msgs::String>("phasespace_errors", 1000, true);
+    // declare publishers
+    ros::Publisher errors_pub = nh.advertise<std_msgs::String>("phasespace_errors", 1000, true);
     //ros::Publisher camerasPub = nh.advertise<phasespace_ros::Cameras>("phasespace_cameras", 1000, true);
-    ros::Publisher markersPub = nh.advertise<phasespace_ros::Markers>("phasespace_markers", 1000);
+    ros::Publisher markers_pub = nh.advertise<phasespace_ros::Markers>("phasespace_markers", 1000);
     ros::Publisher vis_marker_pub = nh.advertise<visualization_msgs::Marker>("visualization_marker", 10);
 
     tf::TransformBroadcaster br;
@@ -52,14 +53,14 @@ int main(int argc, char **argv)
     }
     else
     {
-        ROS_ERROR("Failed to get ip address");
+        ROS_ERROR("Failed to get ip address!!");
+        return 0;
     }
 
     // simple example
-    //std::cout << owl.open(address) <<owl.initialize("timebase=1,1000000")<< std::endl;
     if (owl.open(address) <= 0 || owl.initialize("timebase=1,1000000") <= 0)
     {
-        ROS_INFO("Connection failed!!");
+        ROS_ERROR("Connection failed!!");
         return 0;
     }
 
@@ -90,7 +91,8 @@ int main(int argc, char **argv)
             std::cerr << event->name() << ": " << event->str() << std::endl;
             std_msgs::String str;
             str.data = event->str();
-            errorsPub.publish(str);
+            ROS_ERROR(event->str());
+            errors_pub.publish(str);
         }
         else if (event->type_id() == OWL::Type::CAMERA)
         {
@@ -104,7 +106,7 @@ int main(int argc, char **argv)
                     tf::Transform transform;
                     transform.setOrigin( tf::Vector3(c->pose[0]/1000, c->pose[1]/1000, c->pose[2]/1000) );
                     transform.setRotation( tf::Quaternion(c->pose[4], c->pose[5], c->pose[6], c->pose[3]) );
-                    transforms.push_back(std::make_pair(c->id, transform));
+                    transforms.push_back( std::make_pair(c->id, transform) );
                 }
             }
         }
@@ -126,7 +128,7 @@ int main(int argc, char **argv)
                     out.markers.push_back(mout);
                 }
 
-                markersPub.publish(out);
+                markers_pub.publish(out);
 
                 visualization_msgs::Marker points;
                 points.header.frame_id = base_frame;
