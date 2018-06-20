@@ -2,9 +2,9 @@ cmake_minimum_required(VERSION 2.8.3)
 project(phasespace_ros)
 
 add_compile_options(-std=c++11)
-if(NOT CMAKE_CONFIGURATION_TYPES AND NOT CMAKE_BUILD_TYPE)
-  set(CMAKE_BUILD_TYPE Release)
-endif()
+#if(NOT CMAKE_CONFIGURATION_TYPES AND NOT CMAKE_BUILD_TYPE)
+#  set(CMAKE_BUILD_TYPE Release)
+#endif()
 
 find_package(catkin_simple REQUIRED)
 

@@ -91,7 +91,7 @@ int main(int argc, char **argv)
             std::cerr << event->name() << ": " << event->str() << std::endl;
             std_msgs::String str;
             str.data = event->str();
-            ROS_ERROR(event->str());
+            ROS_ERROR("Error : %s", event->str().c_str());
             errors_pub.publish(str);
         }
         else if (event->type_id() == OWL::Type::CAMERA)
