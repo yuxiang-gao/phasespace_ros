@@ -96,7 +96,7 @@ int main(int argc, char **argv)
         }
         else if (event->type_id() == OWL::Type::CAMERA)
         {
-            if (event->name() == std::string("cameras") && event->get(cameras) > 0)
+            if (transforms.size() != 0 && event->name() == std::string("cameras") && event->get(cameras) > 0)
             {
                 transforms.clear();
                 for (OWL::Cameras::iterator c = cameras.begin(); c != cameras.end(); c++)
