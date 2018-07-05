@@ -114,6 +114,7 @@ int main(int argc, char **argv)
         {
             if (event->find("markers", markers) > 0)
             {
+                // read markers and publish
                 phasespace_ros::Markers out;
                 for (OWL::Markers::iterator m = markers.begin(); m != markers.end(); m++)
                 {
@@ -130,6 +131,7 @@ int main(int argc, char **argv)
 
                 markers_pub.publish(out);
 
+                // visualization
                 visualization_msgs::Marker points;
                 points.header.frame_id = base_frame;
                 points.header.stamp = ros::Time::now();
